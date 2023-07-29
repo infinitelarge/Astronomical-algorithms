@@ -1,6 +1,7 @@
 #赤道坐标转到黄道坐标
 import numpy as np
 import obliquities.obliquity_of_ecliptic as gst
+import sunmoon.sunmoon as sm
 # Don't care about this err, you can still use it.
 def equatorial_to_ecliptic(ra, dec, epoch):
     """
@@ -31,7 +32,7 @@ def equatorial_to_ecliptic(ra, dec, epoch):
     lat = np.degrees(lat)
     return lon, lat
 #黄道坐标转到赤道坐标
-def ecliptic_to_equatorial(lon, lat, epoch):
+def ecliptic_to_equatorial(lon, lat, epoch
     """
     Convert ecliptic coordinates to equatorial coordinates.
 
@@ -51,6 +52,7 @@ def ecliptic_to_equatorial(lon, lat, epoch):
     dec : float
         Declination in degrees.
     """
+
     lon = np.radians(lon)
     lat = np.radians(lat)
     obliquity = gst.obliquity_of_ecliptic(epoch)
@@ -193,3 +195,28 @@ def galactic_to_equatorial(lon, lat):
     ra = np.degrees(ra)
     dec = np.degrees(dec)
     return ra, dec
+#太阳真黄经
+def sun_true_longitude(jd):
+    #太阳中间方程
+    t = (jd - 2451545.0) / 36525
+    #太阳平黄经
+    l0 = 280.46646 + 36000.76983 * t + 0.0003032 * t ** 2
+    #太阳平近点角
+    m = sm.calc(jd).M
+    #太阳中心方程
+    c = (1.914602 - 0.004817 * t - 0.000014 * t ** 2) * np.sin(np.radians(m)) + (0.019993 - 0.000101 * t) * np.sin(np.radians(2 * m)) + 0.000289 * np.sin(np.radians(3 * m))
+    #太阳真黄经
+    l = l0 + c
+    return l
+def sun_look_longtitude(Jday):
+    D, M, M_, F, O = sm.calc(Jday)
+    L = sun_true_longitude(Jday)
+    l = L + np.radians(1.9146) * np.sin(M) + np.radians(0.019993) * np.sin(2 * M)
+    return l
+#太阳赤经
+def sun_ra(jd):
+    l = np.radians(sun_true_longitude(jd))
+    e = np.radians(23.439291)
+    ra = np.arctan2(np.sin(l) * np.cos(e), np.cos(l))
+    ra = np.degrees(ra)
+    return ra
