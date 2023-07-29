@@ -32,7 +32,7 @@ def equatorial_to_ecliptic(ra, dec, epoch):
     lat = np.degrees(lat)
     return lon, lat
 #黄道坐标转到赤道坐标
-def ecliptic_to_equatorial(lon, lat, epoch):
+def ecliptic_to_equatorial(lon, lat, jd):
     """
     Convert ecliptic coordinates to equatorial coordinates.
 
@@ -52,7 +52,7 @@ def ecliptic_to_equatorial(lon, lat, epoch):
     dec : float
         Declination in degrees.
     """
-
+    epoch = (jd - 2451545.0) / 365.25 + 2000.0
     lon = np.radians(lon)
     lat = np.radians(lat)
     obliquity = gst.obliquity_of_ecliptic1(epoch)
@@ -213,17 +213,8 @@ def sun_look_longtitude(Jday):
     L = sun_true_longitude(Jday)
     l = L + np.radians(1.9146) * np.sin(M) + np.radians(0.019993) * np.sin(2 * M)
     return l
-#太阳赤经
-def sun_ra(jd):
-    l = np.radians(sun_true_longitude(jd))
-    e = np.radians(23.439291)
-    ra = np.arctan2(np.sin(l) * np.cos(e), np.cos(l))
-    ra = np.degrees(ra)
-    return ra
-#黄纬
-def sun_dec(jd):
-    l = np.radians(sun_true_longitude(jd))
-    e = np.radians(23.439291)
-    dec = np.arcsin(np.sin(e) * np.sin(l))
-    dec = np.degrees(dec)
-    return dec
+#太阳黄纬
+def sun_true_latitude(jd):
+    m=sm.calc(jd).M
+    b = 0.000346 * np.cos(np.radians(m)) + 0.018203 * np.cos(np.radians(2 * m)) + 0.000046 * np.cos(np.radians(3 * m))
+    return b
