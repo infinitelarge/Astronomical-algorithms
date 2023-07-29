@@ -25,7 +25,7 @@ def equatorial_to_ecliptic(ra, dec, epoch):
     """
     ra = np.radians(ra)
     dec = np.radians(dec)
-    obliquity = gst.obliquity_of_ecliptic(epoch)
+    obliquity = gst.obliquity_of_ecliptic1(epoch)
     lon = np.arctan2(np.sin(ra) * np.cos(obliquity) + np.tan(dec) * np.sin(obliquity), np.cos(ra))
     lat = np.arcsin(np.sin(dec) * np.cos(obliquity) - np.cos(dec) * np.sin(obliquity) * np.sin(ra))
     lon = np.degrees(lon)
@@ -55,7 +55,7 @@ def ecliptic_to_equatorial(lon, lat, epoch):
 
     lon = np.radians(lon)
     lat = np.radians(lat)
-    obliquity = gst.obliquity_of_ecliptic(epoch)
+    obliquity = gst.obliquity_of_ecliptic1(epoch)
     ra = np.arctan2(np.sin(lon) * np.cos(obliquity) - np.tan(lat) * np.sin(obliquity), np.cos(lon))
     dec = np.arcsin(np.sin(lat) * np.cos(obliquity) + np.cos(lat) * np.sin(obliquity) * np.sin(lon))
     ra = np.degrees(ra)
@@ -220,3 +220,10 @@ def sun_ra(jd):
     ra = np.arctan2(np.sin(l) * np.cos(e), np.cos(l))
     ra = np.degrees(ra)
     return ra
+#黄纬
+def sun_dec(jd):
+    l = np.radians(sun_true_longitude(jd))
+    e = np.radians(23.439291)
+    dec = np.arcsin(np.sin(e) * np.sin(l))
+    dec = np.degrees(dec)
+    return dec

@@ -20,7 +20,7 @@ def sunrise(Jday,longitude,latitude):
     # 太阳视黄经
     l = ct.sun_look_longtitude(Jday)
     #太阳视赤经
-    alpha = np.arctan2(np.cos(O) * np.sin(l), np.cos(l))
+    alpha = np.arctan2(np.cos(l) * np.sin(l), np.cos(l)) #O代表太阳视黄经，l代表太阳视黄纬
     #太阳视赤纬，公式来源：https://en.wikipedia.org/wiki/Sunrise_equation
     delta = np.arcsin(np.sin(O) * np.sin(l))
     #太阳视地方时角，公式来源：https://en.wikipedia.org/wiki/Sunrise_equation
