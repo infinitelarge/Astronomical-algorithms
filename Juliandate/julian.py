@@ -6,7 +6,7 @@ def Jd(Y,M,D):
     B=2-A+int(A/4)       
     JD = int(365.25*(Y+4716))+int(30.6001*(M+1))+D+B-1524.5
     MJD=JD-2400000.5
-    return JD
+    return JD,MJD
 def JdtoDate(JD):
     JD=JD+0.5
     Z=int(JD)

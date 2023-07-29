@@ -1,6 +1,6 @@
 import numpy as np
-
-def obliquity_of_ecliptic(epoch):
+import sunmoon.sunmoon as sm
+def obliquity_of_ecliptic1(Jday):
     """
     Calculate the obliquity of the ecliptic.
 
@@ -14,6 +14,9 @@ def obliquity_of_ecliptic(epoch):
     obliquity : float
         Obliquity of the ecliptic in radians.
     """
-    T = (epoch - 2000) / 100
-    obliquity = np.radians(23.43929111 - 46.8150/3600 * T - 0.00059/3600 * T**2 + 0.001813/3600 * T**3)
+    O=sm.calc(Jday).O
+    D=sm.calc(Jday).D
+    M_=sm.calc(Jday).M
+    Δε=(9.20*np.cos(O)-0.57*np.cos(2*D)-0.10*np.cos(2*M_)-0.09*np.cos(2*O))/3600 
+    obliquity=Δε
     return obliquity
