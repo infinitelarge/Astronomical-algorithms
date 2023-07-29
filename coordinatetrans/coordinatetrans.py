@@ -32,7 +32,7 @@ def equatorial_to_ecliptic(ra, dec, epoch):
     lat = np.degrees(lat)
     return lon, lat
 #黄道坐标转到赤道坐标
-def ecliptic_to_equatorial(lon, lat, epoch
+def ecliptic_to_equatorial(lon, lat, epoch):
     """
     Convert ecliptic coordinates to equatorial coordinates.
 
